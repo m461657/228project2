@@ -24,7 +24,8 @@ library(tidyverse)
 ```{r}
 season1 = theoffice %>% 
   select(season, episode, episode_name, imdb_rating) %>% 
-  filter(season == '01')
+  filter(season == '01') %>% 
+  group_by(episode, episode_name, imdb_rating)
 View(season1)
 ```
 

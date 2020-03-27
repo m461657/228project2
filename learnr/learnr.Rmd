@@ -13,6 +13,8 @@ library(schrute)
 View(theoffice)
 
 library(tidyverse)
+
+library(dplyr)
 ```
 
 #INTRODUCTION TO DATA WRANGLING
@@ -25,7 +27,9 @@ library(tidyverse)
 season1 = theoffice %>% 
   select(season, episode, episode_name, imdb_rating) %>% 
   filter(season == '01') %>% 
-  group_by(episode, episode_name, imdb_rating)
+  group_by(episode, episode_name) %>% 
+  #summarize(episode_name = paste(unique(episode_name), collapse = ", "))
+  summarize(imdb_rating = paste(unique(imdb_rating), collapse = ", "))
 View(season1)
 ```
 

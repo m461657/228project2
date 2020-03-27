@@ -7,34 +7,69 @@ runtime: shiny_prerendered
 ```{r setup, include=FALSE}
 library(learnr)
 knitr::opts_chunk$set(echo = FALSE)
-
-install.packages("schrute")
+#install.packages("schrute")
 library(schrute)
-View(theoffice)
-
+#View(theoffice)
 library(tidyverse)
-
 library(dplyr)
 ```
 
-#INTRODUCTION TO DATA WRANGLING
+#Intoduction to Data Wrangling
+Data wrangling is a process that takes data sets and transforms it into a form that is more helpful for the task you are trying to complete. Data can be changed or modified, renamed, and even removed. In R, there are many functions that can be used on a data set to complete the process of data wrangling. 
 
-#talk about each function first
-##functions: select, filter, mutate, arrange, summarize, top_n, group_by, joins
+##The Data Set
+In this tutorial, we will be using theoffice data set in the schrute package, which contains the season, episode number and name, characters and their lines (in order), among some other pieces of information regarding the show.
+
+##The select() function
+The select() function is used to choose which *columns* you would like the include. You can also use select to remove columns. The order in which you include the columns are the order they will appear in in your new data set. 
+
+##The filter() function
+The filter() function is used to select which *rows* you would like to include. 
+
+##The mutate() function
+The mutate function changes the data set. You can use this function to add new rows based on existing rows, or to modify existing rows.
+
+##The arrange() function
+The arrange() function arranges *rows*. It defaults to arranging the data in ascending order, but can also be written to arrange in descending order, which is sometimes more helpful. You just select the column you would like to arrange by.
+
+##The rename() function
+The rename() function does exactly that: renames *columns*(variables). 
+
+##The summarize() function
+The summarize() function creates a data set based on a specific summary statistic. For example, if you wanted the mean of a particular value, the new data set would report the data based on the mean values found. This function is often used alongside group_by().
+
+##The group_by() function
+The group_by() function groups the data. This *must* be used before another function, like summarize. When used together, you can group by a specific parameter and then calculate the summary statistics for each subgroup. 
+
+##The top_n() function
+The top_n() function is used to report the top numbers for a specific variable or value. You can specify how many values you would like reported in the table within the function.
 
 *step 1*:create dataset for season 1
-```{r}
+```{r example_code, include = TRUE}
 season1 = theoffice %>% 
   select(season, episode, episode_name, imdb_rating) %>% 
-  filter(season == '01') %>% 
+  filter(season == 01) %>% 
   group_by(episode, episode_name) %>% 
   #summarize(episode_name = paste(unique(episode_name), collapse = ", "))
   summarize(imdb_rating = paste(unique(imdb_rating), collapse = ", "))
-View(season1)
+#View(season1)
 ```
 
+*step 2*: Practice!
+Create a data set like the one above, but for season 2 (02 in the data set). Fill in the correct information in the *filter()* row.
+```{r practice1, exercise = TRUE}
+season2 = theoffice %>% 
+  select(season, episode, episode_name, imdb_rating) %>% 
+  filter() %>% 
+  group_by(episode, episode_name) %>% 
+  #summarize(episode_name = paste(unique(episode_name), collapse = ", "))
+  summarize(imdb_rating = paste(unique(imdb_rating), collapse = ", "))
+```
 
-
+*converting season to numeric*
+```{r}
+theoffice$season<-as.numeric(theoffice$season)
+```
 
 
 

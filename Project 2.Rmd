@@ -3,3 +3,13 @@ title: "Project 2"
 output: html_document
 ---
 ##Megan Willis and Kyle Goulart
+
+
+###Project tasks: 
+-write a tutorial/lesson plan on data wrangling
+-use any dataset
+-only use functions that make sense, but have variety
+-at least have an intro
+-talk about connections to other topics (like dataviz)
+-can use learnr package to make interactive tutorial
+-make new rmarkdown-->from template-->interactive tutorial

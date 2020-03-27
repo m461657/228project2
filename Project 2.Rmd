@@ -13,3 +13,9 @@ output: html_document
 -talk about connections to other topics (like dataviz)
 -can use learnr package to make interactive tutorial
 -make new rmarkdown-->from template-->interactive tutorial
+
+```{r}
+install.packages("learnr")
+library(learnr)
+```
+

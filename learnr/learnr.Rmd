@@ -24,7 +24,7 @@ In this tutorial, we will be using theoffice data set in the schrute package, wh
 The select() function is used to choose which *columns* you would like the include. You can also use select to remove columns. The order in which you include the columns are the order they will appear in in your new data set. 
 
 ##The filter() function
-The filter() function is used to select which *rows* you would like to include. 
+The filter() function is used to select which *rows* you would like to include. To select a single parameter, use an '=', to select multiple parameters, use an '%in%', along with a vector of the parameters( in the format c("","",...))
 
 ##The mutate() function
 The mutate function changes the data set. You can use this function to add new rows based on existing rows, or to modify existing rows.
@@ -67,20 +67,37 @@ season2 = theoffice %>%
 *converting season to numeric*
 ```{r, include = FALSE}
 theoffice$season<-as.numeric(theoffice$season)
+theoffice$episode<-as.numeric(theoffice$episode)
 ```
 
-```{r}
+Run the following code to calculate the average rating for each season, along with the number of episodes in each season
+```{r season_avg, exercise = TRUE}
 seasons_avg = theoffice %>% 
-  select(season, episode, episode_name, imdb_rating) %>% 
+  select(season, episode, imdb_rating) %>% 
   group_by(season) %>% 
-  summarize(episode = paste(unique(episode), collapse = ", "))
-  group_by(episode) %>% 
-  mutate(num_episodes = n())<
-View(seasons_avg)
+  mutate(avg_rating = mean(imdb_rating, na.rm = TRUE))%>% 
+  group_by(season, episode, avg_rating) %>% 
+  summarize(num_episodes = n()) %>% 
+  group_by(season, avg_rating) %>% 
+  summarize(num_episodes = n()) %>% 
+  select(season, num_episodes, avg_rating)
+head(season_avg, 9)
 ```
 
-
-
+Now, using what you've learned about the filter() function, create a data set with the average rating and number of episodes for seasons 03 and 08.
+```{r season_avg_3_8, exercise = TRUE}
+seasons_avg_3_8 = theoffice %>% 
+  filter() %>% 
+  select(season, episode, imdb_rating) %>% 
+  group_by(season) %>% 
+  mutate(avg_rating = mean(imdb_rating, na.rm = TRUE))%>% 
+  group_by(season, episode, avg_rating) %>% 
+  summarize(num_episodes = n()) %>% 
+  group_by(season, avg_rating) %>% 
+  summarize(num_episodes = n()) %>% 
+  select(season, num_episodes, avg_rating)
+head(season_avg_3_8, 2)
+```
 
 
 

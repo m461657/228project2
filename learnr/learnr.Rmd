@@ -44,34 +44,40 @@ The group_by() function groups the data. This *must* be used before another func
 ##The top_n() function
 The top_n() function is used to report the top numbers for a specific variable or value. You can specify how many values you would like reported in the table within the function.
 
-*step 1*:create dataset for season 1
-```{r example_code, include = TRUE}
+*step 1*: Create dataset for season 1
+```{r example_code, exercise = TRUE}
 season1 = theoffice %>% 
   select(season, episode, episode_name, imdb_rating) %>% 
   filter(season == 01) %>% 
   group_by(episode, episode_name) %>% 
-  #summarize(episode_name = paste(unique(episode_name), collapse = ", "))
   summarize(imdb_rating = paste(unique(imdb_rating), collapse = ", "))
 #View(season1)
 ```
 
 *step 2*: Practice!
-Create a data set like the one above, but for season 2 (02 in the data set). Fill in the correct information in the *filter()* row.
+Create a data set like the one above, but for season 2 (02 in the data set). Report a table including the following columns: season, episode, episode_name, and imdb_rating. Fill in the correct information in the *select* and *filter()* rows.
 ```{r practice1, exercise = TRUE}
 season2 = theoffice %>% 
-  select(season, episode, episode_name, imdb_rating) %>% 
+  select() %>% 
   filter() %>% 
   group_by(episode, episode_name) %>% 
-  #summarize(episode_name = paste(unique(episode_name), collapse = ", "))
   summarize(imdb_rating = paste(unique(imdb_rating), collapse = ", "))
 ```
 
 *converting season to numeric*
-```{r}
+```{r, include = FALSE}
 theoffice$season<-as.numeric(theoffice$season)
 ```
 
-
+```{r}
+seasons_avg = theoffice %>% 
+  select(season, episode, episode_name, imdb_rating) %>% 
+  group_by(season) %>% 
+  summarize(episode = paste(unique(episode), collapse = ", "))
+  group_by(episode) %>% 
+  mutate(num_episodes = n())<
+View(seasons_avg)
+```
 
 
 

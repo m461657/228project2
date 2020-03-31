@@ -14,35 +14,39 @@ library(tidyverse)
 library(dplyr)
 ```
 
-#Intoduction to Data Wrangling
+# Intoduction to Data Wrangling
 Data wrangling is a process that takes data sets and transforms it into a form that is more helpful for the task you are trying to complete. Data can be changed or modified, renamed, and even removed. In R, there are many functions that can be used on a data set to complete the process of data wrangling. 
 
-##The Data Set
+## The Data Set
 In this tutorial, we will be using theoffice data set in the schrute package, which contains the season, episode number and name, characters and their lines (in order), among some other pieces of information regarding the show.
 
-##The select() function
+## Functions
+
+**The select() function**
 The select() function is used to choose which *columns* you would like the include. You can also use select to remove columns. The order in which you include the columns are the order they will appear in in your new data set. 
 
-##The filter() function
+**The filter() function**
 The filter() function is used to select which *rows* you would like to include. To select a single parameter, use an '=', to select multiple parameters, use an '%in%', along with a vector of the parameters( in the format c("","",...))
 
-##The mutate() function
+**The mutate() function**
 The mutate function changes the data set. You can use this function to add new rows based on existing rows, or to modify existing rows.
 
-##The arrange() function
+**The arrange() function**
 The arrange() function arranges *rows*. It defaults to arranging the data in ascending order, but can also be written to arrange in descending order, which is sometimes more helpful. You just select the column you would like to arrange by.
 
-##The rename() function
+**The rename() function**
 The rename() function does exactly that: renames *columns*(variables). 
 
-##The summarize() function
+**The summarize() function**
 The summarize() function creates a data set based on a specific summary statistic. For example, if you wanted the mean of a particular value, the new data set would report the data based on the mean values found. This function is often used alongside group_by().
 
-##The group_by() function
+**The group_by() function**
 The group_by() function groups the data. This *must* be used before another function, like summarize. When used together, you can group by a specific parameter and then calculate the summary statistics for each subgroup. 
 
-##The top_n() function
+**The top_n() function**
 The top_n() function is used to report the top numbers for a specific variable or value. You can specify how many values you would like reported in the table within the function.
+
+## Exercises
 
 *step 1*: Create dataset for season 1
 ```{r example_code, exercise = TRUE}

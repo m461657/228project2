@@ -12,8 +12,14 @@ library(schrute)
 #View(theoffice)
 library(tidyverse)
 library(dplyr)
+library(ggthemes)
 ```
 
+```{r, include = FALSE}
+#converting season and episode to numeric
+theoffice$season<-as.numeric(theoffice$season)
+theoffice$episode<-as.numeric(theoffice$episode)
+```
 # Intoduction to Data Wrangling
 Data wrangling is a process that takes data sets and transforms it into a form that is more helpful for the task you are trying to complete. Data can be changed or modified, renamed, and even removed. In R, there are many functions that can be used on a data set to complete the process of data wrangling. 
 
@@ -50,45 +56,42 @@ The top_n() function is used to report the top numbers for a specific variable o
 
 *step 1*: Create dataset for season 1
 ```{r example_code, exercise = TRUE}
-season1 = theoffice %>% 
-  select(season, episode, episode_name, imdb_rating) %>% 
-  filter(season == 01) %>% 
-  group_by(episode, episode_name) %>% 
-  summarize(imdb_rating = paste(unique(imdb_rating), collapse = ", "))
-#View(season1)
+season1 = theoffice %>%   #creates a new dataset season1 from theoffice dataset
+  filter(season == 01) %>%   #select all ROWS pertaining to season 1 (01 in the season column)
+  select(episode, episode_name, imdb_rating) %>%   #select the COLUMNS to include in the new dataset
+  group_by(episode, episode_name) %>%   #group the dataset by episode and episode name
+  summarize(imdb_rating = paste(unique(imdb_rating),
+                                collapse = ", "))   #summarize by the groups specified in group_by(), and creates a new 
+                                                    #imdb_rating column by collapsing the data into one row per episode
 ```
 
 *step 2*: Practice!
-Create a data set like the one above, but for season 2 (02 in the data set). Report a table including the following columns: season, episode, episode_name, and imdb_rating. Fill in the correct information in the *select* and *filter()* rows.
+Create a data set like the one above, but for season 2. Report a table including the following columns: season, episode, episode_name, and imdb_rating. Fill in the correct information in the *select* and *filter()* rows.
 ```{r practice1, exercise = TRUE}
 season2 = theoffice %>% 
-  select() %>% 
+  select() %>%
   filter() %>% 
   group_by(episode, episode_name) %>% 
   summarize(imdb_rating = paste(unique(imdb_rating), collapse = ", "))
 ```
 
-*converting season to numeric*
-```{r, include = FALSE}
-theoffice$season<-as.numeric(theoffice$season)
-theoffice$episode<-as.numeric(theoffice$episode)
-```
-
 Run the following code to calculate the average rating for each season, along with the number of episodes in each season
 ```{r season_avg, exercise = TRUE}
-seasons_avg = theoffice %>% 
-  select(season, episode, imdb_rating) %>% 
-  group_by(season) %>% 
-  mutate(avg_rating = mean(imdb_rating, na.rm = TRUE))%>% 
-  group_by(season, episode, avg_rating) %>% 
-  summarize(num_episodes = n()) %>% 
-  group_by(season, avg_rating) %>% 
-  summarize(num_episodes = n()) %>% 
-  select(season, num_episodes, avg_rating)
-head(season_avg, 9)
+seasons_avg = theoffice %>%   #creates a new dataset for the average rating per season
+  select(season, episode, imdb_rating) %>%   #select the COLUMNS to use to create the new dataset
+  group_by(season) %>%   #group the dataset by season
+  mutate(avg_rating = mean(imdb_rating, na.rm = TRUE))%>%   #create a new COLUMN called avg_rating by calculating the 
+                                                            #mean for each season
+  group_by(season, episode, avg_rating) %>%   #group the dataset by season, episode and the new column avg_rating
+  summarize(num_episodes = n()) %>%   #caluclates number of episodes per season 
+                                      #**Note: inaccurate due to multiple rows per season in original dataset 
+  group_by(season, avg_rating) %>%   #group by season and avg_rating again
+  summarize(num_episodes = n()) %>%   #calculates the number of episodes per season in new COLUMN called num_episodes
+  select(season, num_episodes, avg_rating)  #reorder selected columns
+head(seasons_avg, 9)  #displays first 9 rows of dataset
 ```
 
-Now, using what you've learned about the filter() function, create a data set with the average rating and number of episodes for seasons 03 and 08.
+Now, using what you've learned about the filter() function, create a data set with the average rating and number of episodes for seasons 3 and 8.
 ```{r season_avg_3_8, exercise = TRUE}
 seasons_avg_3_8 = theoffice %>% 
   filter() %>% 
@@ -100,8 +103,33 @@ seasons_avg_3_8 = theoffice %>%
   group_by(season, avg_rating) %>% 
   summarize(num_episodes = n()) %>% 
   select(season, num_episodes, avg_rating)
-head(season_avg_3_8, 2)
+head(seasons_avg_3_8, 2)
 ```
+
+```{r}
+ggplot(data = seasons_avg, aes(x = reorder(season, -season), y = avg_rating)) + 
+  geom_col(fill = "lightgoldenrod2", color = "lightgoldenrod4") + 
+  labs(title = "Average IMDb Rating Per Season", subtitle = "The Office (U.S.)", x = "", y = "Average Rating") + 
+  theme_economist_white() + 
+  theme(axis.text.y = element_blank(), axis.ticks.y = element_blank()) + 
+  scale_y_continuous(breaks = seq(0,9, by = 1.0), labels = c(0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0)) + 
+  coord_flip()
+  #geom_text(aes(label = avg_rating, vjust = 0.5)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

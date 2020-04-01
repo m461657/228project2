@@ -28,33 +28,27 @@ In this tutorial, we will be using theoffice data set in the schrute package, wh
 
 ## Functions
 
-**The select() function**
-The select() function is used to choose which *columns* you would like the include. You can also use select to remove columns. The order in which you include the columns are the order they will appear in in your new data set. 
+**The select( ) function** is used to choose which *columns* you would like the include. You can also use select to remove columns. The order in which you include the columns are the order they will appear in in your new data set. 
 
-**The filter() function**
-The filter() function is used to select which *rows* you would like to include. To select a single parameter, use an '=', to select multiple parameters, use an '%in%', along with a vector of the parameters( in the format c("","",...))
+**The filter( ) function** is used to select which *rows* you would like to include. To select a single parameter, use an '=', to select multiple parameters, use an '%in%', along with a vector of the parameters( in the format c("","",...))
 
-**The mutate() function**
-The mutate function changes the data set. You can use this function to add new rows based on existing rows, or to modify existing rows.
+**The mutate( ) function** changes the data set. You can use this function to add new rows based on existing rows, or to modify existing rows.
 
-**The arrange() function**
-The arrange() function arranges *rows*. It defaults to arranging the data in ascending order, but can also be written to arrange in descending order, which is sometimes more helpful. You just select the column you would like to arrange by.
+**The arrange( ) function** arranges *rows*. It defaults to arranging the data in ascending order, but can also be written to arrange in descending order, which is sometimes more helpful. You just select the column you would like to arrange by.
 
-**The rename() function**
-The rename() function does exactly that: renames *columns*(variables). 
+**The rename( ) function** does exactly that: renames *columns*(variables). 
 
-**The summarize() function**
-The summarize() function creates a data set based on a specific summary statistic. For example, if you wanted the mean of a particular value, the new data set would report the data based on the mean values found. This function is often used alongside group_by().
+**The summarize( ) function** creates a data set based on a specific summary statistic. For example, if you wanted the mean of a particular value, the new data set would report the data based on the mean values found. This function is often used alongside group_by().
 
-**The group_by() function**
-The group_by() function groups the data. This *must* be used before another function, like summarize. When used together, you can group by a specific parameter and then calculate the summary statistics for each subgroup. 
+**The group_by( ) function** groups the data. This *must* be used before another function, like summarize. When used together, you can group by a specific parameter and then calculate the summary statistics for each subgroup. 
 
-**The top_n() function**
-The top_n() function is used to report the top numbers for a specific variable or value. You can specify how many values you would like reported in the table within the function.
+**The top_n( ) function** is used to report the top numbers for a specific variable or value. You can specify how many values you would like reported in the table within the function.
 
-## Exercises
+**The count( ) function** is used to count up a number of objects. It can be used in place of the summarize() function for counting purposes. The argument sort = TRUE can be added to replace the arrange(desc()) function and argument as well. 
 
-*step 1*: Create dataset for season 1
+## Practice with select( ) and filter( )
+
+**Create dataset for season 1**
 ```{r example_code, exercise = TRUE}
 season1 = theoffice %>%   #creates a new dataset season1 from theoffice dataset
   filter(season == 01) %>%   #select all ROWS pertaining to season 1 (01 in the season column)
@@ -63,16 +57,18 @@ season1 = theoffice %>%   #creates a new dataset season1 from theoffice dataset
   summarize(imdb_rating = paste(unique(imdb_rating),
                                 collapse = ", "))   #summarize by the groups specified in group_by(), and creates a new 
                                                     #imdb_rating column by collapsing the data into one row per episode
+head(season1, 5)   #displays the first 5 rows in the dataset
 ```
 
-*step 2*: Practice!
-Create a data set like the one above, but for season 2. Report a table including the following columns: season, episode, episode_name, and imdb_rating. Fill in the correct information in the *select* and *filter()* rows.
+**Practice!**
+Create a data set like the one above, but for season 2. Report a table including the following columns: season, episode, episode_name, and imdb_rating. Fill in the correct information in the *filter( )* and *select( )* rows.
 ```{r practice1, exercise = TRUE}
 season2 = theoffice %>% 
-  select() %>%
-  filter() %>% 
+  filter(??) %>% 
+  select(??) %>%
   group_by(episode, episode_name) %>% 
   summarize(imdb_rating = paste(unique(imdb_rating), collapse = ", "))
+head(season2, 5)
 ```
 
 Run the following code to calculate the average rating for each season, along with the number of episodes in each season
@@ -83,47 +79,51 @@ seasons_avg = theoffice %>%   #creates a new dataset for the average rating per 
   mutate(avg_rating = mean(imdb_rating, na.rm = TRUE))%>%   #create a new COLUMN called avg_rating by calculating the 
                                                             #mean for each season
   group_by(season, episode, avg_rating) %>%   #group the dataset by season, episode and the new column avg_rating
-  summarize(num_episodes = n()) %>%   #caluclates number of episodes per season 
-                                      #**Note: inaccurate due to multiple rows per season in original dataset 
+  count(num_episodes = n()) %>%   #counts number of episodes per season 
+                                  #**Note: inaccurate due to multiple rows per season in original dataset 
   group_by(season, avg_rating) %>%   #group by season and avg_rating again
-  summarize(num_episodes = n()) %>%   #calculates the number of episodes per season in new COLUMN called num_episodes
+  count(num_episodes = n()) %>%   #counts the number of episodes per season in new COLUMN 
+                                  #called num_episodes
   select(season, num_episodes, avg_rating)  #reorder selected columns
+
+seasons_avg$avg_rating = round(seasons_avg$avg_rating, 2)   #Rounds the avg_rating to one 
+                                                            #decimal place
 head(seasons_avg, 9)  #displays first 9 rows of dataset
 ```
 
-Now, using what you've learned about the filter() function, create a data set with the average rating and number of episodes for seasons 3 and 8.
+Now, using what you've learned about the filter() function, create a data set with the average rating and number of episodes for seasons 3 and 8. Use the code in the example above as a reference.
 ```{r season_avg_3_8, exercise = TRUE}
 seasons_avg_3_8 = theoffice %>% 
-  filter() %>% 
-  select(season, episode, imdb_rating) %>% 
-  group_by(season) %>% 
+  filter(??) %>% 
+  select(??) %>% 
+  group_by(??) %>% 
   mutate(avg_rating = mean(imdb_rating, na.rm = TRUE))%>% 
   group_by(season, episode, avg_rating) %>% 
-  summarize(num_episodes = n()) %>% 
+  count(num_episodes = ??) %>% 
   group_by(season, avg_rating) %>% 
-  summarize(num_episodes = n()) %>% 
+  count(num_episodes = n(??)) %>% 
   select(season, num_episodes, avg_rating)
 head(seasons_avg_3_8, 2)
 ```
 
-```{r}
+```{r plot, warning = FALSE, exercise = TRUE}
 ggplot(data = seasons_avg, aes(x = reorder(season, -season), y = avg_rating)) + 
   geom_col(fill = "lightgoldenrod2", color = "lightgoldenrod4") + 
   labs(title = "Average IMDb Rating Per Season", subtitle = "The Office (U.S.)", x = "", y = "Average Rating") + 
   theme_economist_white() + 
   theme(axis.text.y = element_blank(), axis.ticks.y = element_blank()) + 
   scale_y_continuous(breaks = seq(0,9, by = 1.0), labels = c(0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0)) + 
-  annotate("text", x = 9, y = 1, label = "Season 1") + 
-  annotate("text", x = 8, y = 1, label = "Season 2") +
-  annotate("text", x = 7, y = 1, label = "Season 3") +
-  annotate("text", x = 6, y = 1, label = "Season 4") +
-  annotate("text", x = 5, y = 1, label = "Season 5") +
-  annotate("text", x = 4, y = 1, label = "Season 6") +
-  annotate("text", x = 3, y = 1, label = "Season 7") +
-  annotate("text", x = 2, y = 1, label = "Season 8") +
-  annotate("text", x = 1, y = 1, label = "Season 9") +
+  annotate("text", x = 9, y = 1, label = "Season 1", fontface = "bold", size = 5) + 
+  annotate("text", x = 8, y = 1, label = "Season 2", fontface = "bold", size = 5) +
+  annotate("text", x = 7, y = 1, label = "Season 3", fontface = "bold", size = 5) +
+  annotate("text", x = 6, y = 1, label = "Season 4", fontface = "bold", size = 5) +
+  annotate("text", x = 5, y = 1, label = "Season 5", fontface = "bold", size = 5) +
+  annotate("text", x = 4, y = 1, label = "Season 6", fontface = "bold", size = 5) +
+  annotate("text", x = 3, y = 1, label = "Season 7", fontface = "bold", size = 5) +
+  annotate("text", x = 2, y = 1, label = "Season 8", fontface = "bold", size = 5) +
+  annotate("text", x = 1, y = 1, label = "Season 9", fontface = "bold", size = 5) + 
+  geom_text(aes(label = avg_rating), vjust = .5, hjust = 1.5) + 
   coord_flip()
-  #geom_text(aes(label = avg_rating, vjust = 0.5)
 ```
 
 

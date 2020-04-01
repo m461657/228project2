@@ -13,6 +13,7 @@ library(schrute)
 library(tidyverse)
 library(dplyr)
 library(ggthemes)
+dplyr::filter
 ```
 
 ```{r, include = FALSE}
@@ -64,8 +65,8 @@ head(season1, 5)   #displays the first 5 rows in the dataset
 Create a data set like the one above, but for season 2. Report a table including the following columns: season, episode, episode_name, and imdb_rating. Fill in the correct information in the *filter( )* and *select( )* rows.
 ```{r practice1, exercise = TRUE}
 season2 = theoffice %>% 
-  filter(??) %>% 
-  select(??) %>%
+  filter( ) %>% #
+  select( ) %>% #
   group_by(episode, episode_name) %>% 
   summarize(imdb_rating = paste(unique(imdb_rating), collapse = ", "))
 head(season2, 5)
@@ -91,20 +92,36 @@ seasons_avg$avg_rating = round(seasons_avg$avg_rating, 2)   #Rounds the avg_rati
 head(seasons_avg, 9)  #displays first 9 rows of dataset
 ```
 
+```{r seasonsforplot, exercise = FALSE}
+seasons_avg = theoffice %>% 
+  select(season, episode, imdb_rating) %>% 
+  group_by(season) %>% 
+  mutate(avg_rating = mean(imdb_rating, na.rm = TRUE))%>% 
+  group_by(season, episode, avg_rating) %>% 
+  count(num_episodes = n()) %>% 
+  group_by(season, avg_rating) %>% 
+  count(num_episodes = n()) %>% 
+  select(season, num_episodes, avg_rating)
+
+seasons_avg$avg_rating = round(seasons_avg$avg_rating, 2)
+```
+
+
 Now, using what you've learned about the filter() function, create a data set with the average rating and number of episodes for seasons 3 and 8. Use the code in the example above as a reference.
 ```{r season_avg_3_8, exercise = TRUE}
 seasons_avg_3_8 = theoffice %>% 
-  filter(??) %>% 
-  select(??) %>% 
-  group_by(??) %>% 
+  filter( ) %>% #
+  select( ) %>% #
+  group_by( ) %>% #
   mutate(avg_rating = mean(imdb_rating, na.rm = TRUE))%>% 
   group_by(season, episode, avg_rating) %>% 
-  count(num_episodes = ??) %>% 
+  count(num_episodes = ) %>% #
   group_by(season, avg_rating) %>% 
-  count(num_episodes = n(??)) %>% 
+  count(num_episodes = ) %>% #
   select(season, num_episodes, avg_rating)
 head(seasons_avg_3_8, 2)
 ```
+
 
 ```{r plot, warning = FALSE, exercise = TRUE}
 ggplot(data = seasons_avg, aes(x = reorder(season, -season), y = avg_rating)) + 

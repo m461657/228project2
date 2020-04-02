@@ -8,13 +8,10 @@ runtime: shiny_prerendered
 ```{r setup, include=FALSE}
 library(learnr)
 knitr::opts_chunk$set(echo = FALSE)
-#install.packages("schrute")
 library(schrute)
-#View(theoffice)
 library(tidyverse)
 library(dplyr)
 library(ggthemes)
-dplyr::filter
 ```
 
 ```{r, include = FALSE}
@@ -40,20 +37,20 @@ In this tutorial, we will be using **theoffice** dataset found within the `schru
 
 **The** `rename( )` **function** does exactly that: renames *columns*(variables). Ex: rename(rating = imdb_rating)
 
-**The** `summarize( )` **function** creates a data set based on a specific summary statistic. For example, if you wanted the mean of a particular value, the new data set would report the data based on the mean values found. This function is often used alongside group_by().
+**The** `summarize( )` **function** creates a data set based on a specific summary statistic. For example, if you wanted the mean of a particular value, the new data set would report the data based on the mean values found. This function is often used alongside group_by(). Ex: summarize(x_mean = mean(x))
 
-**The** `group_by( )` **function** groups the data. This *must* be used before another function, like summarize. When used together, you can group by a specific parameter and then calculate the summary statistics for each subgroup. 
+**The** `group_by( )` **function** groups specified parts of the data. This *must* be followed by another function, such as summarize( ). When used together, you can group by a specific parameter and then calculate the summary statistics for each subgroup. Ex: group_by(season, episode_name)
 
-**The** `top_n( )` **function** is used to report the top numbers for a specific variable or value. You can specify how many values you would like reported in the table within the function.
+**The** `top_n( )` **function** is used to report the top numbers for a specific variable or value. You can specify how many values you would like reported in the table within the function. Ex: top_n(x,10)
 
-**The** `count( )` **function** is used to count up a number of objects. It can be used in place of the summarize() function for counting purposes. The argument sort = TRUE can be added to replace the arrange(desc()) function and argument as well. 
+**The** `count( )` **function** is used to count up a number of objects. It can be used in place of the summarize() function for counting purposes. The argument sort = TRUE can be added to replace the arrange(desc()) function and argument as well. Ex: count(num_episodes = n(), sort = TRUE)
 
 ## Practice with select( ) and filter( )
 
 **Create dataset for season 1**
 ```{r example_code, exercise = TRUE}
 season1 = theoffice %>%   #creates a new dataset season1 from theoffice dataset
-  filter(season == 01) %>%   #select all ROWS pertaining to season 1 (01 in the season column)
+  filter(season == 1) %>%   #select all ROWS pertaining to season 1
   select(episode, episode_name, imdb_rating) %>%   #select the COLUMNS to include in the new dataset
   group_by(episode, episode_name) %>%   #group the dataset by episode and episode name
   summarize(imdb_rating = paste(unique(imdb_rating),
@@ -63,11 +60,11 @@ head(season1, 5)   #displays the first 5 rows in the dataset
 ```
 
 **Practice!**
-Create a data set like the one above, but for season 2. Report a table including the following columns: season, episode, episode_name, and imdb_rating. Fill in the correct information in the *filter( )* and *select( )* rows.
+Create a dataset like the one above, but for season 2. Report a table including the following columns: episode, episode_name, and imdb_rating. Fill in the correct information in the `filter( )` and `select( )` lines.
 ```{r practice1, exercise = TRUE}
 season2 = theoffice %>% 
-  filter( ) %>% #
-  select( ) %>% #
+  filter( ) %>% 
+  select( ) %>% 
   group_by(episode, episode_name) %>% 
   summarize(imdb_rating = paste(unique(imdb_rating), collapse = ", "))
 head(season2, 5)
@@ -111,24 +108,24 @@ seasons_avg$avg_rating = round(seasons_avg$avg_rating, 2)
 ```
 
 
-Now, using what you've learned about the filter() function, create a data set with the average rating and number of episodes for seasons 3 and 8. Use the code in the example above as a reference.
+Now, using what you've learned about the `filter( )` function, create a dataset with the average rating and number of episodes for seasons 3 and 8. Also, fill in code for the `select( )`, `group_by( )`, and `count( )` lines. Use the code in the example above as a reference.
 ```{r season_avg_3_8, exercise = TRUE}
 seasons_avg_3_8 = theoffice %>% 
-  filter( ) %>% #
-  select( ) %>% #
-  group_by( ) %>% #
+  filter( ) %>% 
+  select( ) %>% 
+  group_by( ) %>% 
   mutate(avg_rating = mean(imdb_rating, na.rm = TRUE))%>% 
   group_by(season, episode, avg_rating) %>% 
-  count(num_episodes = ) %>% #
+  count(num_episodes = ) %>% 
   group_by(season, avg_rating) %>% 
-  count(num_episodes = ) %>% #
+  count(num_episodes = ) %>% 
   select(season, num_episodes, avg_rating)
 head(seasons_avg_3_8, 2)
 ```
 
 ## Data In Action
 
-Now take a look at this data graphic using the new **seasons_avg** dataset created!
+Now take a look at this data graphic using the new **seasons_avg** dataset we created earlier!
 ```{r plot, warning = FALSE, exercise = TRUE}
 ggplot(data = seasons_avg, aes(x = reorder(season, -season), y = avg_rating)) + 
   geom_col(fill = "lightgoldenrod2", color = "lightgoldenrod4") + 
@@ -151,7 +148,7 @@ ggplot(data = seasons_avg, aes(x = reorder(season, -season), y = avg_rating)) +
 
 ### Background and Conclusions
 
-Looking at this data graphic, it is clear that overall, *The Office (U.S.)* is highly rated among it's viewers. These findings make sense based on the rapport the show possesses. The show aired in 2005, and continued on for 9 seasons, through 2013. Given the continued success, and therefore the continued production, it is reasonable to assume that the average rating season to season was high. Those assumptions are supported by the results displayed in the above plot. As fans of "The Office (U.S.)", the trend of higher ratings in the early to middle seasons, as well as the final season seem to add up. Personally, our favorite seasons are seasons 3-6, so we fully support the results that show these seasons are highly regarded by fellow fanatics. It is arguably one of the best TV shows of all time! 
+Looking at this data graphic, it is clear that overall, *The Office (U.S.)* is highly rated among it's viewers. These findings make sense based on the rapport the show possesses. The show aired in 2005, and continued on for 9 seasons, through 2013. Given the continued success, and therefore the continued production, it is reasonable to assume that the average rating season to season was high. Those assumptions are supported by the results displayed in the above plot. As fans of *The Office (U.S.)*, the trend of higher ratings in the early to middle seasons, as well as the final season seem to add up. Personally, our favorite seasons are seasons 3-6, so we fully support the results that show these seasons are highly regarded by fellow fanatics. It is arguably one of the best TV shows of all time! 
 
 
 

@@ -1,7 +1,9 @@
 ---
 title: "Data Wrangling Tutorial"
 author: "Megan Willis & Kyle Goulart"
-output: learnr::tutorial
+output:
+    learnr::tutorial:
+          theme: "journal"
 runtime: shiny_prerendered
 ---
 
@@ -45,7 +47,7 @@ In this tutorial, we will be using **theoffice** dataset found within the `schru
 
 **The** `count( )` **function** is used to count up a number of objects. It can be used in place of the summarize() function for counting purposes. The argument sort = TRUE can be added to replace the arrange(desc()) function and argument as well. Ex: count(num_episodes = n(), sort = TRUE)
 
-## Practice with select( ) and filter( )
+## Practice with select( ) & filter( )
 
 **Create dataset for season 1**
 ```{r example_code, exercise = TRUE}
@@ -70,7 +72,7 @@ season2 = theoffice %>%
 head(season2, 5)
 ```
 
-## Practice using group_by( ) and count( )
+## Practice with group_by( ) & count( )
 
 Run the following code to calculate the average rating for each season, along with the number of episodes in each season
 ```{r season_avg, exercise = TRUE}

@@ -1,5 +1,6 @@
 ---
 title: "Tutorial"
+author: "Megan Willis & Kyle Goulart"
 output: learnr::tutorial
 runtime: shiny_prerendered
 ---
@@ -21,31 +22,31 @@ dplyr::filter
 theoffice$season<-as.numeric(theoffice$season)
 theoffice$episode<-as.numeric(theoffice$episode)
 ```
-# Intoduction to Data Wrangling
-Data wrangling is a process that takes data sets and transforms it into a form that is more helpful for the task you are trying to complete. Data can be changed or modified, renamed, and even removed. In R, there are many functions that can be used on a data set to complete the process of data wrangling. 
+## Intro to Data Wrangling: *The Office (U.S.)* Edition
+Data wrangling is a process that takes datasets and transforms them into a form that is more helpful for the task at hand. Any of all parts of the data can be manipulated, renamed, and even removed. In R, there are many functions that can be used on a dataset to complete the process of data wrangling. 
 
 ## The Data Set
-In this tutorial, we will be using theoffice data set in the schrute package, which contains the season, episode number and name, characters and their lines (in order), among some other pieces of information regarding the show.
+In this tutorial, we will be using **theoffice** dataset found within the `schrute` package, which contains the season, episode number and name, characters and their lines (in order), episode ratings, as well as other pieces of information pertaining to the show.
 
-## Functions
+## Overview of Functions
 
-**The select( ) function** is used to choose which *columns* you would like the include. You can also use select to remove columns. The order in which you include the columns are the order they will appear in in your new data set. 
+**The** `select( )` **function** is used to choose which *columns* you would like to include. You can also use this function to remove columns. The order in which you include the columns as arguments are the order they will appear in your new dataset. Ex: select(season, episode_name)
 
-**The filter( ) function** is used to select which *rows* you would like to include. To select a single parameter, use an '=', to select multiple parameters, use an '%in%', along with a vector of the parameters( in the format c("","",...))
+**The** `filter( )` **function** is used to select which *rows* you would like to include. To select a single parameter, use an '=='. To select multiple parameters, use an '%in%', along with a vector of the parameters( in the format c(x1,x2,...)). Ex: filter(season == 5) or filter(season %in% c(5,6))
 
-**The mutate( ) function** changes the data set. You can use this function to add new rows based on existing rows, or to modify existing rows.
+**The** `mutate( )` **function** changes the dataset. You can use this function to add new columns based on existing columns. Ex: mutate(bmi = weight/height^2)
 
-**The arrange( ) function** arranges *rows*. It defaults to arranging the data in ascending order, but can also be written to arrange in descending order, which is sometimes more helpful. You just select the column you would like to arrange by.
+**The** `arrange( )` **function** arranges *rows*. It defaults to arranging the data in ascending order, but can also be written to arrange in descending order, which is sometimes more helpful. You just select the column you would like to arrange by. Ex: arrange(desc(n))
 
-**The rename( ) function** does exactly that: renames *columns*(variables). 
+**The** `rename( )` **function** does exactly that: renames *columns*(variables). Ex: rename(rating = imdb_rating)
 
-**The summarize( ) function** creates a data set based on a specific summary statistic. For example, if you wanted the mean of a particular value, the new data set would report the data based on the mean values found. This function is often used alongside group_by().
+**The** `summarize( )` **function** creates a data set based on a specific summary statistic. For example, if you wanted the mean of a particular value, the new data set would report the data based on the mean values found. This function is often used alongside group_by().
 
-**The group_by( ) function** groups the data. This *must* be used before another function, like summarize. When used together, you can group by a specific parameter and then calculate the summary statistics for each subgroup. 
+**The** `group_by( )` **function** groups the data. This *must* be used before another function, like summarize. When used together, you can group by a specific parameter and then calculate the summary statistics for each subgroup. 
 
-**The top_n( ) function** is used to report the top numbers for a specific variable or value. You can specify how many values you would like reported in the table within the function.
+**The** `top_n( )` **function** is used to report the top numbers for a specific variable or value. You can specify how many values you would like reported in the table within the function.
 
-**The count( ) function** is used to count up a number of objects. It can be used in place of the summarize() function for counting purposes. The argument sort = TRUE can be added to replace the arrange(desc()) function and argument as well. 
+**The** `count( )` **function** is used to count up a number of objects. It can be used in place of the summarize() function for counting purposes. The argument sort = TRUE can be added to replace the arrange(desc()) function and argument as well. 
 
 ## Practice with select( ) and filter( )
 
@@ -72,6 +73,8 @@ season2 = theoffice %>%
 head(season2, 5)
 ```
 
+## Practice using group_by( ) and count( )
+
 Run the following code to calculate the average rating for each season, along with the number of episodes in each season
 ```{r season_avg, exercise = TRUE}
 seasons_avg = theoffice %>%   #creates a new dataset for the average rating per season
@@ -93,6 +96,7 @@ head(seasons_avg, 9)  #displays first 9 rows of dataset
 ```
 
 ```{r seasonsforplot, exercise = FALSE}
+#saved dataset for ggplot
 seasons_avg = theoffice %>% 
   select(season, episode, imdb_rating) %>% 
   group_by(season) %>% 
@@ -122,7 +126,9 @@ seasons_avg_3_8 = theoffice %>%
 head(seasons_avg_3_8, 2)
 ```
 
+## Data In Action
 
+Now take a look at this data graphic using the new **seasons_avg** dataset created!
 ```{r plot, warning = FALSE, exercise = TRUE}
 ggplot(data = seasons_avg, aes(x = reorder(season, -season), y = avg_rating)) + 
   geom_col(fill = "lightgoldenrod2", color = "lightgoldenrod4") + 
@@ -142,6 +148,13 @@ ggplot(data = seasons_avg, aes(x = reorder(season, -season), y = avg_rating)) +
   geom_text(aes(label = avg_rating), vjust = .5, hjust = 1.5) + 
   coord_flip()
 ```
+
+### Background and Conclusions
+
+Looking at this data graphic, it is clear that overall, *The Office (U.S.)* is highly rated among it's viewers. These findings make sense based on the rapport the show possesses. The show aired in 2005, and continued on for 9 seasons, through 2013. Given the continued success, and therefore the continued production, it is reasonable to assume that the average rating season to season was high. Those assumptions are supported by the results displayed in the above plot. As fans of "The Office (U.S.)", the trend of higher ratings in the early to middle seasons, as well as the final season seem to add up. Personally, our favorite seasons are seasons 3-6, so we fully support the results that show these seasons are highly regarded by fellow fanatics. It is arguably one of the best TV shows of all time! 
+
+
+
 
 
 

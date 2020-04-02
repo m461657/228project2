@@ -7,7 +7,7 @@ output:
 runtime: shiny_prerendered
 ---
 
-```{r setup, include=FALSE}
+```{r setup, include=FALSE, warning = FALSE, echo = FALSE}
 library(learnr)
 knitr::opts_chunk$set(echo = FALSE)
 library(schrute)
@@ -16,7 +16,7 @@ library(dplyr)
 library(ggthemes)
 ```
 
-```{r, include = FALSE}
+```{r, include = FALSE, warning = FALSE}
 #converting season and episode to numeric
 theoffice$season<-as.numeric(theoffice$season)
 theoffice$episode<-as.numeric(theoffice$episode)
@@ -47,10 +47,16 @@ In this tutorial, we will be using **theoffice** dataset found within the `schru
 
 **The** `count( )` **function** is used to count up a number of objects. It can be used in place of the summarize() function for counting purposes. The argument sort = TRUE can be added to replace the arrange(desc()) function and argument as well. Ex: count(num_episodes = n(), sort = TRUE)
 
+### Useful Operators to Know
+
+There are a few different operators that will be good to know before getting started. Mentioned in the `filter( )` section above, the **==** tests for *equality* and is commonly used for a *single* parameter. The **%in%** operator also tests for *equality*, but for *multiple* parameters in the vector that follows. 
+
+The **pipe operator (%>%)** is extremely prevalent in the world of data wrangling. The pipe operator allows you to move seamlessly from operation to operation, forming a *pipeline*. It pipes the output of one operation to the input of the next operation, streamlining multiple operations performed on a single dataset, instead of doing each individually. You will see this operator in action throughout the remainder of the tutorial.
+
 ## Practice with select( ) & filter( )
 
 **Create dataset for season 1**
-```{r example_code, exercise = TRUE}
+```{r example_code, exercise = TRUE, warning = FALSE}
 season1 = theoffice %>%   #creates a new dataset season1 from theoffice dataset
   filter(season == 1) %>%   #select all ROWS pertaining to season 1
   select(episode, episode_name, imdb_rating) %>%   #select the COLUMNS to include in the new dataset
@@ -75,7 +81,7 @@ head(season2, 5)
 ## Practice with group_by( ) & count( )
 
 Run the following code to calculate the average rating for each season, along with the number of episodes in each season
-```{r season_avg, exercise = TRUE}
+```{r season_avg, exercise = TRUE, warning = FALSE}
 seasons_avg = theoffice %>%   #creates a new dataset for the average rating per season
   select(season, episode, imdb_rating) %>%   #select the COLUMNS to use to create the new dataset
   group_by(season) %>%   #group the dataset by season
@@ -94,7 +100,7 @@ seasons_avg$avg_rating = round(seasons_avg$avg_rating, 2)   #Rounds the avg_rati
 head(seasons_avg, 9)  #displays first 9 rows of dataset
 ```
 
-```{r seasonsforplot, exercise = FALSE}
+```{r seasonsforplot, exercise = FALSE, warning = FALSE}
 #saved dataset for ggplot
 seasons_avg = theoffice %>% 
   select(season, episode, imdb_rating) %>% 

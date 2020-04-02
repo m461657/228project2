@@ -1,5 +1,5 @@
 ---
-title: "Tutorial"
+title: "Data Wrangling Tutorial"
 author: "Megan Willis & Kyle Goulart"
 output: learnr::tutorial
 runtime: shiny_prerendered
@@ -29,7 +29,7 @@ In this tutorial, we will be using **theoffice** dataset found within the `schru
 
 **The** `select( )` **function** is used to choose which *columns* you would like to include. You can also use this function to remove columns. The order in which you include the columns as arguments are the order they will appear in your new dataset. Ex: select(season, episode_name)
 
-**The** `filter( )` **function** is used to select which *rows* you would like to include. To select a single parameter, use an '=='. To select multiple parameters, use an '%in%', along with a vector of the parameters( in the format c(x1,x2,...)). Ex: filter(season == 5) or filter(season %in% c(5,6))
+**The** `filter( )` **function** is used to select which *rows* you would like to include. To select a single parameter, use the '==' operator. To select multiple parameters, use an '%in%', along with a vector of the parameters (vector format: c(x1,x2,...)). Ex: filter(season == 5) or filter(season %in% c(5,6))
 
 **The** `mutate( )` **function** changes the dataset. You can use this function to add new columns based on existing columns. Ex: mutate(bmi = weight/height^2)
 
@@ -146,7 +146,7 @@ ggplot(data = seasons_avg, aes(x = reorder(season, -season), y = avg_rating)) +
   coord_flip()
 ```
 
-### Background and Conclusions
+### Background & Conclusions
 
 Looking at this data graphic, it is clear that overall, *The Office (U.S.)* is highly rated among it's viewers. These findings make sense based on the rapport the show possesses. The show aired in 2005, and continued on for 9 seasons, through 2013. Given the continued success, and therefore the continued production, it is reasonable to assume that the average rating season to season was high. Those assumptions are supported by the results displayed in the above plot. As fans of *The Office (U.S.)*, the trend of higher ratings in the early to middle seasons, as well as the final season seem to add up. Personally, our favorite seasons are seasons 3-6, so we fully support the results that show these seasons are highly regarded by fellow fanatics. It is arguably one of the best TV shows of all time! 
 

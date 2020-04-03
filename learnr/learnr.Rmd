@@ -16,7 +16,7 @@ library(dplyr)
 library(ggthemes)
 ```
 
-```{r, include = FALSE, warning = FALSE}
+```{r, include = FALSE}
 #converting season and episode to numeric
 theoffice$season<-as.numeric(theoffice$season)
 theoffice$episode<-as.numeric(theoffice$episode)
@@ -56,7 +56,7 @@ The **pipe operator (%>%)** is extremely prevalent in the world of data wranglin
 ## Practice with select( ) & filter( )
 
 **Create dataset for season 1**
-```{r example_code, exercise = TRUE, warning = FALSE}
+```{r example_code, exercise = TRUE}
 season1 = theoffice %>%   #creates a new dataset season1 from theoffice dataset
   filter(season == 1) %>%   #select all ROWS pertaining to season 1
   select(episode, episode_name, imdb_rating) %>%   #select the COLUMNS to include in the new dataset
@@ -81,7 +81,7 @@ head(season2, 5)
 ## Practice with group_by( ) & count( )
 
 Run the following code to calculate the average rating for each season, along with the number of episodes in each season
-```{r season_avg, exercise = TRUE, warning = FALSE}
+```{r season_avg, exercise = TRUE}
 seasons_avg = theoffice %>%   #creates a new dataset for the average rating per season
   select(season, episode, imdb_rating) %>%   #select the COLUMNS to use to create the new dataset
   group_by(season) %>%   #group the dataset by season

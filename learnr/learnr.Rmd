@@ -100,7 +100,7 @@ seasons_avg$avg_rating = round(seasons_avg$avg_rating, 2)   #Rounds the avg_rati
 head(seasons_avg, 9)  #displays first 9 rows of dataset
 ```
 
-```{r seasonsforplot, exercise = FALSE, warning = FALSE}
+```{r seasonsforplot, exercise = FALSE}
 #saved dataset for ggplot
 seasons_avg = theoffice %>% 
   select(season, episode, imdb_rating) %>% 
